@@ -1,0 +1,45 @@
+{
+  "name": "reitrn-print-agent-lite",
+  "version": "1.0.0",
+  "description": "reitrn. Print Agent Lite — local label printer for reitrn.com",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "build": "electron-builder --win"
+  },
+  "dependencies": {
+    "electron-store": "^8.2.0"
+  },
+  "devDependencies": {
+    "electron": "^28.3.3",
+    "electron-builder": "^24.13.3"
+  },
+  "build": {
+    "appId": "com.reitrn.print-agent-lite",
+    "productName": "reitrn Print Agent Lite",
+    "copyright": "reitrn.",
+    "win": {
+      "target": [
+        { "target": "nsis", "arch": ["x64"] },
+        { "target": "portable", "arch": ["x64"] }
+      ],
+      "icon": "assets/icon.ico",
+      "artifactName": "reitrn-print-agent-lite-setup.exe",
+      "signAndEditExecutable": false
+    },
+    "nsis": {
+      "oneClick": true,
+      "runAfterFinish": true,
+      "installerIcon": "assets/icon.ico",
+      "uninstallerIcon": "assets/icon.ico"
+    },
+    "files": [
+      "main.js",
+      "preload.js",
+      "printer.js",
+      "renderer/**/*",
+      "assets/**/*",
+      "node_modules/**/*"
+    ]
+  }
+}

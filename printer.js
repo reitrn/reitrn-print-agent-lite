@@ -23,21 +23,35 @@ function getInstalledPrinters() {
     }
   }
 
-  // Fallback: use wmic (much faster than PowerShell, no startup overhead)
+  const { execSync } = require('child_process');
+
+  // Fallback 1: wmic (fast, works on Windows 10 and earlier Windows 11 builds)
   try {
-    const { execSync } = require('child_process');
     const output = execSync(
       'wmic printer get name /format:list',
       { encoding: 'utf8', timeout: 10000 },
     );
-    return output
+    const names = output
       .split('\n')
       .map((l) => l.trim())
       .filter((l) => l.startsWith('Name='))
       .map((l) => l.replace('Name=', '').trim())
       .filter(Boolean);
+    if (names.length > 0) return names;
+    // wmic ran but returned nothing — fall through to PowerShell
   } catch (err) {
-    console.error('[Printer] wmic fallback failed:', err.message);
+    console.warn('[Printer] wmic fallback failed, trying PowerShell:', err.message);
+  }
+
+  // Fallback 2: PowerShell Get-Printer (Windows 11 22H2+ where wmic is removed)
+  try {
+    const output = execSync(
+      'powershell -NoProfile -NonInteractive -Command "Get-Printer | Select-Object -ExpandProperty Name"',
+      { encoding: 'utf8', timeout: 15000 },
+    );
+    return output.split('\n').map((l) => l.trim()).filter(Boolean);
+  } catch (err) {
+    console.error('[Printer] PowerShell fallback failed:', err.message);
     return [];
   }
 }

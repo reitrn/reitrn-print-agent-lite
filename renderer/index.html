@@ -284,7 +284,7 @@
           Label Printer
         </div>
         <div class="printer-row" style="margin-bottom:6px;">
-          <select id="printerSelect" style="flex:1;">
+          <select id="printerSelect" style="flex:1;" onchange="savePrinter(this.value)">
             <option value="">Select a printer…</option>
           </select>
         </div>
@@ -350,7 +350,13 @@
         opt.value = name;
         opt.textContent = name;
         if (name === selected) opt.selected = true;
+        sel.appendChild(opt);
       });
+    }
+
+    function savePrinter(name) {
+      selectedPrinter = name;
+      window.reitrn.setSetting('printer', name);
     }
 
     function refreshPrinters() {

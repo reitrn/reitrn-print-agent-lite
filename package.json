@@ -20,12 +20,21 @@
     "copyright": "reitrn.",
     "win": {
       "target": [
-        { "target": "nsis", "arch": ["x64"] },
-        { "target": "portable", "arch": ["x64"] }
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        },
+        {
+          "target": "portable",
+          "arch": [
+            "x64"
+          ]
+        }
       ],
       "icon": "assets/icon.ico",
-      "artifactName": "reitrn-print-agent-lite-setup.exe",
-      "signAndEditExecutable": false
+      "artifactName": "reitrn-print-agent-lite-setup.exe"
     },
     "nsis": {
       "oneClick": true,
